@@ -1,5 +1,5 @@
 {
-  "title": "BISHENG",
+  "title": "ORION",
   "prompt": "ヒント",
   "unsupportedFileType": "サポートされていないファイル形式: {{extensions}}",
   "supportedFormatsWithImages": "サポートされているファイル形式は pdf（スキャン含む）、txt、docx、ppt、pptx、md、html、xls、xlsx、csv、doc、png、jpg、jpeg、bmp です。各ファイルの最大サイズは {{maxSize}}MB です。pdf はトレーサビリティ位置特定をサポートします。",
