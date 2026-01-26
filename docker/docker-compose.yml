@@ -129,7 +129,10 @@ services:
 
   frontend:
     container_name: bisheng-frontend
-    image: cr.dataelem.com/dataelement/bisheng-frontend:latest
+    # 使用镜像仓库的镜像
+    # image: cr.dataelem.com/dataelement/bisheng-frontend:latest
+    # 使用本地构建的镜像
+    image: bisheng-frontend
     ports:
       - "3001:3001"
     environment:
