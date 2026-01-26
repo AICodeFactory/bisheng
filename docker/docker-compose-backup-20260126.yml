@@ -1,7 +1,7 @@
 services:
   mysql:
     container_name: bisheng-mysql
-    image: cr.dataelem.com/mysql:8.0
+    image: mysql:8.0
     
     ports:
       - "3306:3306"
@@ -22,7 +22,7 @@ services:
 
   redis:
     container_name: bisheng-redis
-    image: cr.dataelem.com/redis:7.0.4
+    image: redis:7.0.4
     ports:
       - "6379:6379"
     environment:
@@ -38,22 +38,9 @@ services:
       retries: 3
     restart: on-failure
 
-  office:
-    container_name: bisheng-office
-    image: cr.dataelem.com/onlyoffice/documentserver:7.1.1
-    ports:
-      - "8701:80"
-    environment:
-      TZ: Asia/Shanghai
-      JWT_ENABLED: "false"
-    volumes:
-      - ${DOCKER_VOLUME_DIRECTORY:-.}/office/bisheng:/var/www/onlyoffice/documentserver/sdkjs-plugins/bisheng
-    command: bash -c "supervisorctl restart all"
-    restart: on-failure
-
   backend:
     container_name: bisheng-backend
-    image: cr.dataelem.com/dataelement/bisheng-backend:latest
+    image: dataelement/bisheng-backend:v2.3.0-beta4
     ports:
       - "7860:7860"
     environment:
@@ -90,12 +77,10 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
-      office:
-        condition: service_started
   
   backend_worker:
     container_name: bisheng-backend-worker
-    image: cr.dataelem.com/dataelement/bisheng-backend:latest
+    image: dataelement/bisheng-backend:v2.3.0-beta4
     environment:
       TZ: Asia/Shanghai
       BS_MILVUS_CONNECTION_ARGS: '{"host":"milvus","port":"19530","user":"","password":"","secure":false}'
@@ -116,7 +101,7 @@ services:
     security_opt:
       - seccomp:unconfined
     extra_hosts:
-      - "host.docker.internal:host-gateway"
+      - "host.docker.internal:host-gateway" 
     command: sh entrypoint.sh worker  # 启动celery的异步worker服务，用来处理一些耗时的任务
     restart: on-failure
     depends_on:
@@ -124,12 +109,11 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
-      office:
-        condition: service_started
+
 
   frontend:
     container_name: bisheng-frontend
-    image: cr.dataelem.com/dataelement/bisheng-frontend:latest
+    image: dataelement/bisheng-frontend:v2.3.0-beta4
     ports:
       - "3001:3001"
     environment:
@@ -137,15 +121,15 @@ services:
     volumes:
       - ${DOCKER_VOLUME_DIRECTORY:-.}/nginx/nginx.conf:/etc/nginx/nginx.conf
       - ${DOCKER_VOLUME_DIRECTORY:-.}/nginx/conf.d:/etc/nginx/conf.d
-    restart: on-failure
     extra_hosts:
-      - "host.docker.internal:host-gateway"
+      - "host.docker.internal:host-gateway" 
+    restart: on-failure
     depends_on:
       - backend
 
   elasticsearch:
     container_name: bisheng-es
-    image: cr.dataelem.com/bitnami/elasticsearch:8.12.0
+    image: docker.io/bitnamilegacy/elasticsearch:8.12.0
     user: root
     ports:
       - "9200:9200"
@@ -158,7 +142,7 @@ services:
 
   etcd:
     container_name: bisheng-milvus-etcd
-    image: cr.dataelem.com/quay.io/coreos/etcd:v3.5.5
+    image: quay.io/coreos/etcd:v3.5.5
     environment:
       ETCD_AUTO_COMPACTION_MODE: revision
       ETCD_AUTO_COMPACTION_RETENTION: "1000"
@@ -177,7 +161,7 @@ services:
 
   minio:
     container_name: bisheng-milvus-minio
-    image: cr.dataelem.com/minio/minio:RELEASE.2023-03-20T20-16-18Z
+    image: minio/minio:RELEASE.2023-03-20T20-16-18Z
     environment:
       MINIO_ACCESS_KEY: minioadmin
       MINIO_SECRET_KEY: minioadmin
@@ -197,7 +181,7 @@ services:
 
   milvus:
     container_name: bisheng-milvus-standalone
-    image: cr.dataelem.com/milvusdb/milvus:v2.5.10
+    image: milvusdb/milvus:v2.5.10
     command: ["milvus", "run", "standalone"]
     security_opt:
     - seccomp:unconfined
