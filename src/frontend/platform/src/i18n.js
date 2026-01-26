@@ -10,10 +10,7 @@ const getBrowserLanguage = () => {
     const savedLanguage = localStorage.getItem('i18nextLng');
     if (savedLanguage) return savedLanguage === 'zh' ? 'zh-Hans' : savedLanguage;
 
-    const browserLang = navigator.language || navigator.userLanguage || 'en-US';
-    // Map browser language codes to the languages we support 
-    if (browserLang.startsWith('zh')) return 'zh-Hans';
-    if (browserLang.startsWith('ja')) return 'ja';
+    // 默认返回英文，不再根据浏览器语言自动推断
     return 'en-US';
 };
 

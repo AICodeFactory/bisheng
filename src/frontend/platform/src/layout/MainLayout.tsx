@@ -253,7 +253,7 @@ export default function MainLayout() {
 };
 
 const useLanguage = (user: User) => {
-    const [language, setLanguage] = useState('zh-Hans')
+    const [language, setLanguage] = useState('en-US')
     useEffect(() => {
         const lang = user.user_id ? localStorage.getItem('i18nextLng') : null
         if (lang) {

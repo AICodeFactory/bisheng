@@ -41,9 +41,8 @@ const defaultLang = (): string => {
   }
   if (storageNorm) return storageNorm;
 
-  // 浏览器语言
-  const browserNorm = normalize(navigator.language || (navigator.languages && navigator.languages[0]) || 'en');
-  return browserNorm || 'en';
+  // 默认返回英文，不再根据浏览器语言自动推断
+  return 'en';
 };
 
 const lang = atomWithLocalStorage('lang', defaultLang());
