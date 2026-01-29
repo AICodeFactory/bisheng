@@ -55,6 +55,8 @@ services:
     depends_on:
       redis:
         condition: service_healthy
+    cpus: 1.0 # 限制 1 个核心
+    mem_limit: 1g # 限制 1GB 内存
   
   backend_worker:
     container_name: bisheng-backend-worker
@@ -85,6 +87,8 @@ services:
     depends_on:
       redis:
         condition: service_healthy
+    cpus: 1.0 # 限制 1 个核心
+    mem_limit: 1g # 限制 1GB 内存
 
   frontend:
     container_name: bisheng-frontend
