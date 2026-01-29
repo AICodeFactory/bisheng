@@ -18,8 +18,8 @@ elif [ $start_mode = "worker" ]; then
         exit 1
     fi
 
-    # 工作流执行worker（从 100 并发降到 10，这个最占资源，避免 OOM）
-    nohup celery -A bisheng.worker.main worker -l info -c 10 -P threads -Q workflow_celery -n workflow@%h &
+    # 工作流执行worker（从 100 并发降到 50，这个最占资源，避免 OOM）
+    nohup celery -A bisheng.worker.main worker -l info -c 50 -P threads -Q workflow_celery -n workflow@%h &
     if [ $? -ne 0 ]; then
         echo "Failed to start workflow worker."
         exit 1
