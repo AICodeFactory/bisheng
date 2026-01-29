@@ -1,24 +1,4 @@
 services:
-  mysql:
-    container_name: bisheng-mysql
-    image: cr.dataelem.com/mysql:8.0
-    
-    ports:
-      - "3306:3306"
-    environment:
-      MYSQL_ROOT_PASSWORD: "yrGtksd75de2"  # 数据库密码，如果修改需要同步修改bisheng/congfig/config.yaml配置database_url的mysql连接密码
-      MYSQL_DATABASE: bisheng
-      TZ: Asia/Shanghai
-    volumes:
-      - ${DOCKER_VOLUME_DIRECTORY:-.}/mysql/conf/my.cnf:/etc/mysql/my.cnf
-      - ${DOCKER_VOLUME_DIRECTORY:-.}/mysql/data:/var/lib/mysql
-    healthcheck:
-      test: ["CMD-SHELL", "exit | mysql -u root -p$$MYSQL_ROOT_PASSWORD"]
-      start_period: 30s
-      interval: 20s
-      timeout: 10s
-      retries: 4
-    restart: on-failure
 
   redis:
     container_name: bisheng-redis
