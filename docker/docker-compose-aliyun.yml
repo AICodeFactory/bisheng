@@ -87,8 +87,8 @@ services:
     depends_on:
       redis:
         condition: service_healthy
-    #cpus: 2.0 # 限制 1 个核心
-    #mem_limit: 3g # 增加到 1.5GB 内存以避免 OOM（已降低 worker 并发数）
+    cpus: 2.0 # 限制 2 个核心
+    mem_limit: 4g # 增加到 1.5GB 内存以避免 OOM（已降低 worker 并发数）
 
   frontend:
     container_name: bisheng-frontend
