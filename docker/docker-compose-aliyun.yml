@@ -30,7 +30,7 @@ services:
       - ${DOCKER_VOLUME_DIRECTORY:-.}/office/bisheng:/var/www/onlyoffice/documentserver/sdkjs-plugins/bisheng
     command: bash -c "supervisorctl restart all"
     restart: on-failure
-    
+
   backend:
     container_name: bisheng-backend
     image: dataelement/bisheng-backend:v2.3.0
@@ -135,9 +135,17 @@ services:
       - "9300:9300"
     environment:
       TZ: Asia/Shanghai
+      # 设置 JVM 堆内存，例如 -Xms1g -Xmx1g 表示最小和最大堆内存都为 1GB
+      # 请根据你服务器的总内存来分配，通常建议不超过物理内存的 50%
+      # 另外，建议 Xms 和 Xmx 设置为相同的值，以避免 GC 暂停
+      ES_JAVA_OPTS: "-Xms1g -Xmx1g"
     volumes:
       - ${DOCKER_VOLUME_DIRECTORY:-.}/data/es:/bitnami/elasticsearch/data
-    restart: on-failure
+    restart: no
+    # 限制 CPU 资源
+    cpu_shares: 512 # 这是一个相对值，表示它能获得的 CPU 时间是默认值的 50%
+    cpus: 1 # 限制只能使用 1 个 CPU 核心 
+
 
   etcd:
     container_name: bisheng-milvus-etcd
