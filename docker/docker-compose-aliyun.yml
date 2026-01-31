@@ -18,9 +18,21 @@ services:
       retries: 3
     restart: no
 
+  office:
+    container_name: bisheng-office
+    image: cr.dataelem.com/onlyoffice/documentserver:7.1.1
+    ports:
+      - "8701:80"
+    environment:
+      TZ: Asia/Shanghai
+      JWT_ENABLED: "false"
+    volumes:
+      - ${DOCKER_VOLUME_DIRECTORY:-.}/office/bisheng:/var/www/onlyoffice/documentserver/sdkjs-plugins/bisheng
+    command: bash -c "supervisorctl restart all"
+    restart: on-failure
   backend:
     container_name: bisheng-backend
-    image: dataelement/bisheng-backend:v2.3.0-beta4
+    image: dataelement/bisheng-backend:v2.3.0
     ports:
       - "7860:7860"
     environment:
@@ -55,12 +67,14 @@ services:
     depends_on:
       redis:
         condition: service_healthy
+      office:
+        condition: service_started
     #cpus: 2.0 # 限制 1 个核心
     #mem_limit: 3g # 增加到 1.5GB 内存以避免 OOM（已降低 worker 数量）
   
   backend_worker:
     container_name: bisheng-backend-worker
-    image: dataelement/bisheng-backend:v2.3.0-beta4
+    image: dataelement/bisheng-backend:v2.3.0
     environment:
       TZ: Asia/Shanghai
       BS_MILVUS_CONNECTION_ARGS: '{"host":"milvus","port":"19530","user":"","password":"","secure":false}'
@@ -87,6 +101,8 @@ services:
     depends_on:
       redis:
         condition: service_healthy
+      office:
+        condition: service_started
     #cpus: 2.0 # 限制 2 个核心
     #mem_limit: 3g # 增加到 1.5GB 内存以避免 OOM（已降低 worker 并发数）
 
@@ -108,29 +124,23 @@ services:
       - "host.docker.internal:host-gateway"
     depends_on:
       - backend
+
   elasticsearch:
     container_name: bisheng-es
-    image: docker.io/bitnamilegacy/elasticsearch:8.12.0
+    image: cr.dataelem.com/bitnami/elasticsearch:8.12.0
     user: root
     ports:
       - "9200:9200"
       - "9300:9300"
     environment:
       TZ: Asia/Shanghai
-      # 设置 JVM 堆内存，例如 -Xms1g -Xmx1g 表示最小和最大堆内存都为 1GB
-      # 请根据你服务器的总内存来分配，通常建议不超过物理内存的 50%
-      # 另外，建议 Xms 和 Xmx 设置为相同的值，以避免 GC 暂停
-      ES_JAVA_OPTS: "-Xms1g -Xmx1g"
     volumes:
       - ${DOCKER_VOLUME_DIRECTORY:-.}/data/es:/bitnami/elasticsearch/data
-    restart: no
-    # 限制 CPU 资源
-    cpu_shares: 512 # 这是一个相对值，表示它能获得的 CPU 时间是默认值的 50%
-    cpus: 1 # 限制只能使用 1 个 CPU 核心 
+    restart: on-failure
 
   etcd:
     container_name: bisheng-milvus-etcd
-    image: quay.io/coreos/etcd:v3.5.5
+    image: cr.dataelem.com/quay.io/coreos/etcd:v3.5.5
     environment:
       ETCD_AUTO_COMPACTION_MODE: revision
       ETCD_AUTO_COMPACTION_RETENTION: "1000"
@@ -140,7 +150,7 @@ services:
     volumes:
       - ${DOCKER_VOLUME_DIRECTORY:-.}/data/milvus-etcd:/etcd
     command: etcd -advertise-client-urls=http://127.0.0.1:2379 -listen-client-urls http://0.0.0.0:2379 --data-dir /etcd
-    restart: no
+    restart: on-failure
     healthcheck:
       test: ["CMD", "etcdctl", "endpoint", "health"]
       interval: 30s
@@ -149,7 +159,7 @@ services:
 
   minio:
     container_name: bisheng-milvus-minio
-    image: minio/minio:RELEASE.2023-03-20T20-16-18Z
+    image: cr.dataelem.com/minio/minio:RELEASE.2023-03-20T20-16-18Z
     environment:
       MINIO_ACCESS_KEY: minioadmin
       MINIO_SECRET_KEY: minioadmin
@@ -160,7 +170,7 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_VOLUME_DIRECTORY:-.}/data/milvus-minio:/minio_data
     command: minio server /minio_data --console-address ":9001"
-    restart: no
+    restart: on-failure
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
       interval: 30s
@@ -169,7 +179,7 @@ services:
 
   milvus:
     container_name: bisheng-milvus-standalone
-    image: milvusdb/milvus:v2.5.10
+    image: cr.dataelem.com/milvusdb/milvus:v2.5.10
     command: ["milvus", "run", "standalone"]
     security_opt:
     - seccomp:unconfined
@@ -179,7 +189,7 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_VOLUME_DIRECTORY:-.}/data/milvus:/var/lib/milvus
-    restart: no
+    restart: on-failure
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:9091/healthz"]
       start_period: 90s
