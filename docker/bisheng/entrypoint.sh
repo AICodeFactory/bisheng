@@ -6,12 +6,12 @@ export PYTHONPATH="./"
 start_mode=${1:-api}
 
 start_knowledge(){
-  # 知识库解析的celery worker
+  # 知识库解析的celery worker （从 20 并发降到 8，避免 OOM）
     celery -A bisheng.worker.main worker -l info -c 20 -P threads -Q knowledge_celery -n knowledge@%h
 }
 
 start_workflow(){
-  # 工作流相关的celery worker
+  # 工作流相关的celery worker （从 100 并发降到 50，这个最占资源，避免 OOM）
     celery -A bisheng.worker.main worker -l info -c 100 -P threads -Q workflow_celery -n workflow@%h
 }
 
@@ -21,7 +21,7 @@ start_beat(){
 }
 
 start_linsight(){
-  # 灵思后台任务worker
+  # 灵思后台任务worker （从 4 进程降到 2，并发从 5 降到 3，避免 OOM）
     python bisheng/linsight/worker.py --worker_num 4 --max_concurrency 5
 }
 start_default(){
@@ -31,6 +31,7 @@ start_default(){
 
 if [ "$start_mode" = "api" ]; then
     echo "Starting API server..."
+    # 避免 OOM（可以从 8 降到 4 或 2，取决于你的服务器性能）
     uvicorn bisheng.main:app --host 0.0.0.0 --port 7860 --no-access-log --workers 8
 elif [ "$start_mode" = "knowledge" ]; then
     echo "Starting Knowledge Celery worker..."
