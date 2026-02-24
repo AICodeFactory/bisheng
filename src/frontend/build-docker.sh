@@ -39,7 +39,7 @@ if [ $? -eq 0 ]; then
     echo "  docker run -d -p 3001:3001 --name bisheng-frontend $IMAGE_NAME"
     echo ""
     echo "或者使用 docker-compose 重启 frontend 服务:"
-    echo "  cd ../../docker && docker-compose up -d --force-recreate frontend"
+    echo "  cd ../../docker && docker compose -f docker-compose-aliyun.yml up -d --force-recreate frontend"
 else
     echo "=========================================="
     echo "❌ 镜像构建失败"
