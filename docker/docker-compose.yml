@@ -111,9 +111,9 @@ services:
 
   frontend:
     container_name: bisheng-frontend
-    # image: dataelement/bisheng-frontend:v2.4.0-beta1
+    image: dataelement/bisheng-frontend:v2.4.0-beta1
     # 使用本地构建的镜像
-    image: bisheng-frontend
+    # image: bisheng-frontend
     ports:
       - "3001:3001"
     environment:
@@ -121,6 +121,8 @@ services:
     volumes:
       - ${DOCKER_VOLUME_DIRECTORY:-.}/nginx/nginx.conf:/etc/nginx/nginx.conf
       - ${DOCKER_VOLUME_DIRECTORY:-.}/nginx/conf.d:/etc/nginx/conf.d
+      # orion 目录：存放 orion 相关图片和配置，挂载到平台静态资源目录
+      - ${DOCKER_VOLUME_DIRECTORY:-.}/orion:/usr/share/nginx/html/platform/assets/bisheng
     restart: on-failure
     depends_on:
       - backend
