@@ -27,7 +27,7 @@ from bisheng_langchain.gpts.tools.dalle_image_generator.tool import (
     DallEImageGenerator, ProxyDallEAPIWrapper,
 )
 from bisheng_langchain.gpts.tools.get_current_time.tool import get_current_time
-from bisheng_langchain.gpts.tools.orion.tool import orion
+from bisheng_langchain.gpts.tools.orion.tool import get_orion_info
 from bisheng_langchain.gpts.tools.local_file.local_file import LocalFileTool
 from bisheng_langchain.gpts.tools.sql_agent.tool import SqlAgentTool, SqlAgentAPIWrapper
 from bisheng_langchain.gpts.tools.web_search.tool import WebSearchTool, SearchTool
@@ -44,7 +44,7 @@ def _get_calculator() -> BaseTool:
 
 
 def _get_orion() -> BaseTool:
-    return orion
+    return get_orion_info
 
 
 def _get_arxiv() -> BaseTool:
