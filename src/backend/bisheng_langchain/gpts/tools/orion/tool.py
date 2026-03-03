@@ -12,7 +12,7 @@ class OrionInput(BaseModel):
 
 
 @tool(args_schema=OrionInput)
-def orion(query: str = ""):
+def get_orion_info(query: str = ""):
     """
     Get basic information about Orion company, including company name, description, main business, founding date, etc.
     Call this tool when users ask about Orion company related information.
