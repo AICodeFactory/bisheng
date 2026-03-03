@@ -57,6 +57,7 @@ _BASE_TOOLS: Dict[str, Callable[[], BaseTool]] = {
     'calculator': _get_calculator,
     'arxiv': _get_arxiv,
     'orion': _get_orion,
+    'get_orion_info': _get_orion,  # alias for orion, matches function name
 }
 
 _LLM_TOOLS: Dict[str, Callable[[BaseLanguageModel], BaseTool]] = {}
