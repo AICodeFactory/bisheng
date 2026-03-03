@@ -63,6 +63,10 @@
         "时间": {
             "name": "时间",
             "desc": "获取当前时间"
+        },
+        "Orion": {
+            "name": "Orion",
+            "desc": "获取 Orion 公司的基础信息，包括公司名称、简介、主营业务等"
         }
     },
     "tools": {
@@ -345,6 +349,11 @@
         "get_current_time": {
             "name": "时间",
             "desc": "返回当前时间，如果未指定时区，将使用 UTC+8 时间",
+            "params": {}
+        },
+        "orion": {
+            "name": "Orion公司信息",
+            "desc": "获取 Orion 公司的基础信息，包括公司名称、简介、主营业务、成立时间等",
             "params": {}
         }
     },

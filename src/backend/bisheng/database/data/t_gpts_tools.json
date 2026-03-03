@@ -1114,5 +1114,20 @@
     "is_delete": 0,
     "user_id": 1,
     "id": 38
+  },
+  {
+    "name": "Orion公司信息",
+    "logo": null,
+    "desc": "获取 Orion 公司的基础信息，包括公司名称、简介、主营业务、成立时间等",
+    "tool_key": "orion",
+    "type": 17,
+    "extra": "{}",
+    "is_preset": 1,
+    "is_delete": 0,
+    "user_id": null,
+    "create_time": "2024-03-29 14:36:00",
+    "update_time": "2024-03-29 14:36:00",
+    "id": 39,
+    "api_params": []
   }
 ]

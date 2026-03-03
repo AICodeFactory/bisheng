@@ -27,6 +27,7 @@ from bisheng_langchain.gpts.tools.dalle_image_generator.tool import (
     DallEImageGenerator, ProxyDallEAPIWrapper,
 )
 from bisheng_langchain.gpts.tools.get_current_time.tool import get_current_time
+from bisheng_langchain.gpts.tools.orion.tool import orion
 from bisheng_langchain.gpts.tools.local_file.local_file import LocalFileTool
 from bisheng_langchain.gpts.tools.sql_agent.tool import SqlAgentTool, SqlAgentAPIWrapper
 from bisheng_langchain.gpts.tools.web_search.tool import WebSearchTool, SearchTool
@@ -42,6 +43,10 @@ def _get_calculator() -> BaseTool:
     return calculator
 
 
+def _get_orion() -> BaseTool:
+    return orion
+
+
 def _get_arxiv() -> BaseTool:
     return ArxivQueryRun(
         api_wrapper=ArxivAPIWrapperSelf(top_k_results=5, load_max_docs=5, load_all_available_meta=True))
@@ -51,6 +56,7 @@ _BASE_TOOLS: Dict[str, Callable[[], BaseTool]] = {
     'get_current_time': _get_current_time,
     'calculator': _get_calculator,
     'arxiv': _get_arxiv,
+    'orion': _get_orion,
 }
 
 _LLM_TOOLS: Dict[str, Callable[[BaseLanguageModel], BaseTool]] = {}

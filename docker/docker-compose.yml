@@ -45,6 +45,7 @@ services:
       - "7860:7860"
     environment:
       TZ: Asia/Shanghai
+      BISHENG_PRO: 'true'
       BS_MILVUS_CONNECTION_ARGS: '{"host":"milvus","port":"19530","user":"","password":"","secure":false}'
       BS_MILVUS_IS_PARTITION: 'true'
       BS_MILVUS_PARTITION_SUFFIX: '1'
@@ -82,6 +83,7 @@ services:
     image: dataelement/bisheng-backend:v2.4.0-beta1
     environment:
       TZ: Asia/Shanghai
+      BISHENG_PRO: 'true'
       BS_MILVUS_CONNECTION_ARGS: '{"host":"milvus","port":"19530","user":"","password":"","secure":false}'
       BS_MILVUS_IS_PARTITION: 'true'
       BS_MILVUS_PARTITION_SUFFIX: '1'
@@ -204,3 +206,30 @@ services:
     depends_on:
       - etcd
       - minio
+
+  office:
+    container_name: bisheng-office
+    image: onlyoffice/documentserver:7.1.1
+    ports:
+      - "8701:80"
+    environment:
+      TZ: Asia/Shanghai
+      JWT_ENABLED: "false"
+    volumes:
+      - ${DOCKER_VOLUME_DIRECTORY:-.}/office/bisheng:/var/www/onlyoffice/documentserver/sdkjs-plugins/bisheng
+    command: bash -c "supervisorctl restart all"
+    restart: on-failure
+
+  gateway:
+    image: cr.dataelem.com/dataelement/gateway:release
+    container_name: bisheng-gateway
+    restart: always
+    ports:
+      - 8080:8080
+    environment:
+      - TZ=Asia/Shanghai
+      - LANG=C.UTF-8
+      - LC_ALL=C.UTF-8
+    volumes:
+      - ${DOCKER_VOLUME_DIRECTORY:-.}/gateway/config/application.yml:/application.yml #自定义配置文件
+      # - ./gateway/config/words.txt:/words.txt #自定义配置文件
