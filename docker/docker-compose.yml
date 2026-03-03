@@ -40,7 +40,9 @@ services:
 
   backend:
     container_name: bisheng-backend
-    image: dataelement/bisheng-backend:v2.4.0-beta1
+    #image: dataelement/bisheng-backend:v2.4.0-beta1
+    # 使用本地构建的镜像
+    image: bisheng-backend
     ports:
       - "7860:7860"
     environment:
@@ -80,7 +82,9 @@ services:
   
   backend_worker:
     container_name: bisheng-backend-worker
-    image: dataelement/bisheng-backend:v2.4.0-beta1
+    #image: dataelement/bisheng-backend:v2.4.0-beta1
+    # 使用本地构建的镜像
+    image: bisheng-backend
     environment:
       TZ: Asia/Shanghai
       BISHENG_PRO: 'true'
