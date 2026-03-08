@@ -79,7 +79,7 @@ export default function useTextarea({
     }
 
     const getPlaceholderText = () => {
-      return placeholder || '发送消息内容...'
+      return placeholder || 'Send message content...';
       if (disabled) {
         return localize('com_endpoint_config_placeholder');
       }
