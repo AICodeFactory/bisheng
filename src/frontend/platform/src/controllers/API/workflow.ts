@@ -172,7 +172,7 @@ const workflowTemplate = [
         "v": "3",
         "group_params": [
             {
-                "name": "开场引导",
+                "name": "Opening Guide",
                 "params": [
                     {
                         "key": "guide_word",
@@ -192,7 +192,7 @@ const workflowTemplate = [
                 ]
             },
             {
-                "name": "全局变量",
+                "name": "Global Variables",
                 "params": [
                     {
                         "key": "user_info",
@@ -258,7 +258,7 @@ const workflowTemplate = [
         },
         "group_params": [
             {
-                "name": "接收文本",
+                "name": "Receive Text",
                 "params": [
                     {
                         "key": "user_input",
@@ -460,7 +460,7 @@ const workflowTemplate = [
                 ]
             },
             {
-                "name": "模型设置",
+                "name": "Model Settings",
                 "params": [
                     {
                         "key": "model_id",
@@ -484,7 +484,7 @@ const workflowTemplate = [
                 ]
             },
             {
-                "name": "提示词",
+                "name": "Prompt",
                 "params": [
                     {
                         "key": "system_prompt",
@@ -511,7 +511,7 @@ const workflowTemplate = [
                 ]
             },
             {
-                "name": "输出",
+                "name": "Output",
                 "params": [
                     {
                         "key": "output_user",
@@ -570,7 +570,7 @@ const workflowTemplate = [
                 ]
             },
             {
-                "name": "模型设置",
+                "name": "Model Settings",
                 "params": [
                     {
                         "key": "model_id",
@@ -919,7 +919,7 @@ const workflowTemplate = [
                 ]
             },
             {
-                "name": "输出",
+                "name": "Output",
                 "params": [
                     {
                         "key": "retrieved_result",
@@ -961,7 +961,7 @@ const workflowTemplate = [
         "v": "1",
         "group_params": [
             {
-                "name": "入参",
+                "name": "Input",
                 "params": [
                     {
                         "key": "code_input",
@@ -986,7 +986,7 @@ const workflowTemplate = [
                 ]
             },
             {
-                "name": "执行代码",
+                "name": "Execute Code",
                 "params": [
                     {
                         "key": "code",
@@ -997,7 +997,7 @@ const workflowTemplate = [
                 ]
             },
             {
-                "name": "出参",
+                "name": "Output",
                 "params": [
                     {
                         "key": "code_output",
